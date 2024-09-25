@@ -1,0 +1,76 @@
+#mytextarea {
+    height: 400px;
+    width:500px;
+    box-sizing:border-box
+}
+#mytextarea2{
+    height: 200px;
+    width: 300px
+}
+.iconsmall {
+    font-size: 16px;
+}
+
+#pre, #next {
+    background-color:  rgb(40, 6, 6);
+}
+
+   
+
+.carousel.slide {
+    width: 800px;
+    height: 400px;
+    background-color: beige;
+
+}
+
+.carousel-item img {
+   min-width: 480px;
+    min-height: 300px;
+    width: auto;
+    height: auto;
+    max-width: 800px;
+    max-height: 400px;
+
+   
+}
+.carousel.slide + form{
+    width:550px;
+}
+
+
+
+nav#pagination .ul .li .a{
+    color: rgb(226, 63, 63);
+    text-decoration: none;
+}
+nav#pagination .ul .li:focus{
+    background-color: rgb(239, 78, 78);
+    color: #f0eaea;
+    perspective: 1000px;
+}
+
+nav#pagination .ul .li:focus{
+    background-color: rgb(237, 137, 137);
+    color: #f0eaea;
+    box-shadow: 2px;
+}
+
+
+@media (max-width:690px){
+    #mytextarea {
+        height:300px;
+        width:240px;
+        box-sizing:border-box;
+    }
+
+    .carousel.slide, .carousel-item img{
+        height: 230px;
+        width: 400px;
+    }
+
+    .carousel.slide + form{
+        width:400px;
+    }
+
+}

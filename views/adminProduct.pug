@@ -1,0 +1,143 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title Manage Product
+    script(src="/javascripts/main.js")
+    script(src="/javascripts/index.js")
+    link(rel="icon" href="/image/thankyou.jpg" type="image/x-icon")
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
+    link(rel='stylesheet' href='../styles/tailwind.css')
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+    link(rel="stylesheet",href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')
+    link(rel="stylesheet", href="/index.css")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous")
+    script(src="/tinymce.min.js")
+
+    script(src="https://cdn.tiny.cloud/1/5fxl12ux1gwq75ukb0yjklc0rc23764knyyf5lb8rq6x6qij/tinymce/7/tinymce.min.js" referrerpolicy="origin")
+    script.
+      tinymce.init({
+        selector: '#mytextarea',
+        plugins: [
+          'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'markdown',
+          'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+          'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+    
+      });
+    script.
+        tinymce.init({
+            selector: '#mytextarea2',
+            width: '90%', // Đặt chiều rộng
+            height: 400, // Đặt chiều cao
+            plugins: [
+                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'markdown',
+                'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+                    'alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+        });
+    body
+        header
+        main(class='mt-20 md:p-20 py-6 h-full w-full')
+            h3(class="text-red-400 text-2xl mt-2 text-center w-full") Danh Sách Sản Phẩm
+            div(class=" ml-12  text-gray-500  w-5/6 relative")
+                div(class="   flex justify-start ")
+                    button(class="mt-16")
+                        i(class="fas fa-filter buttonopenfiter ")
+                    div(class="absolute letf-4 space-y-2 top-20 shadow h-36 py-2 w-24 bg-white text-sm z-50 text-gray-600 " id="filterPro")
+                        button(id="filterON") Đang Hoạt Động
+                        hr(class="w-full")
+                        button(id="filterOFF") Dừng Hoạt Động
+                        button(class="mt-2 ml-4 border-4 border-red-500  rounded-md " type="button")
+                            a(href="/admin/manageProduct" class="no-underline font-medium text-red-500") Bỏ Chọn
+                div(class=" flex justify-end ml-8")
+                    button(class=(!Rights||Rights[4].value)?"":"hidden")
+                        i(class="fas fa-plus button-addPro")
+                    div(class=" absolute letf-4 top-12 shadow h-auto  w-6/7 bg-white space-y-4 text-md font-bold  text-gray-600 p-3 hidden addProducts z-50" id="addProducts" )
+                        div(class="w-6/7 mt-2 flex justify-end")
+                            button(id="ButtonOutPro" class="button-addPro")
+                                i(class="fas fa-times ")
+                        h3(class=" text-2xl text-red-500 font-semibold text-center w-full") Thêm Mới Sản Phẩm
+                        form(class=" mt-8 h-full w-full  space-y-4 " action="/admin/addProduct" method="POST" id="FormAddProduct"  enctype="multipart/form-data")
+                            input(class="border-2 border-gray-300 w-60 rounded-md md:w-2/3 ml-20 mt-4 h-6 p-2 text-sm-gray-500 " name="product" value='ProductName1' autocomplete="on" required placeholder="ProductName") 
+                            input(class="border-2 border-gray-300 w-60 rounded-md md:w-2/3 ml-20  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 " value='200.000'  name="price" type="Number"  autocomplete="on" required placeholder=" Giá")
+                            input(type="file" name='img' class="h-6 w-60 border-2 border-gray-300 ml-20 rounded-md md:w-2/3 " required placeholder=" Chọn Hình Ảnh" multiple)
+                            select(class="border-2 border-gray-300 rounded-md w-2/3 ml-20 mt-2 md:mt-3 h-12 p-2 text-sm text-gray-500" name="category" required)
+                                option(value="" disabled selected) Chọn Danh Mục Sản Phẩm
+                                each cat in category
+                                    option(value=cat[1]) #{cat[0]}
+                                
+                            textarea(id="mytextarea" name="desc" require placeholder="  Mô tả sản phẩm"  class="ml-4 mt-4 border-2 border-gray-300 rounded-md w-5/6 h-40 ")
+                            button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-28 ml-28 md:ml-6  mt-40") Thêm
+
+            div(class="w-full h-auto mt-6  px-2")
+                
+                table(class="text-center background-collapse md:ml-20 relative")
+                    thead
+                        tr(class="h-28 divide-y")
+                            th(class="w-20") Id
+                            th(class="w-56")  Hình Ảnh
+                            th(class="w-32")  Tên Sản Phẩm
+                            th(class="w-96")  Mô Tả Sản Phẩm
+                            th(class="w-40 ")  Giá
+                            th(class="w-48") Trạng Thái
+                            th(class=(!Rights||Rights[5].value&&Rights[6].value)?"w-24":"hidden") 
+                    tbody
+                        each pro in products
+                            tr(class="h-68  text-center divide-y text-sm" id=`tr${pro.id}`)
+                                td #{pro.id}
+                                td
+                                    img(class="md:w-48 w-24 h-20 md:mb-8 md:h-36" src=pro.imageURL[0])
+                                td #{pro.name}
+                                td #{pro.decs}
+                                td #{pro.price}.000 đ
+                                td 
+                                    button(class=pro.deleted?"h-10 w-32 p-1 text-center bg-red-600 text-gray-100":"btn btn-success h-10 w-32 p-1 text-center " data-status=pro.deleted data-id=pro.id)
+                                        span(class=" text-sm") #{pro.deleted?"Ngừng Hoạt Động":"Đang Hoạt động"}
+                                td(class="flex w-full") 
+                                    button(class=(!Rights||Rights[5].value)?"flex w-1/3 justify-start mr-1  md:justify-center mt-2 buttonOpenFormEdit":"hidden" data-id=pro.id) 
+                                        i(class="fas fa-edit ml-2 md:mr-2 " ) 
+                                    div(class="hidden absolute md:right-32 top-10 right-3 p-4 w-auto md:p-0  h-auto bg-yellow-100 z-50" id=`FormEditProduct${pro.id}`) 
+                                        div(class="mr-2  w-full mt-2 flex justify-end")
+                                            button( class="buttonOpenFormEdit")
+                                                i(class="fas fa-times ")
+                                        h3(class=" text-2xl text-red-500 font-semibold text-center w-full") Chỉnh Sửa Sản Phẩm
+                                        form(class=" mt-8 h-full ml-10 w-full  space-y-4 " action="/admin/editProduct" method="POST" id=`EditProduct${pro.id}`)
+                                            input(type="hidden" name=pro.id )
+                                            input(class="border-2 border-gray-300 rounded-md w-4/5  mt-4 h-6 p-2 text-sm-gray-500  mr-48" name="product" value= pro.name autocomplete="on" required placeholder="ProductName") 
+                                            input(class="border-2 border-gray-300 rounded-md w-4/5  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 mr-48" value=pro.price name="price" type="Number"  autocomplete="on" required placeholder=" Giá")
+                                            input(type="file" name="img" class="h-6  border-2 border-gray-300  rounded-md w-4/5 mr-48" required placeholder=" Chọn Hình Ảnh" multiple value=pro.image)
+                                            div(class="border-2 border-gray-300 h-48  md:h-80 w-2/5 mr-48 ")
+                                                each image,index in pro.imageURL
+                                                      div(class=(image&&pro.imageURL.length===1)?"w-full h-full relative":`w-1/${pro.imageURL.length} h-1/${pro.imageURL.length} p-1 relative`  )
+                                                        img(src=image class="w-full h-full border-2 border-gray-600")
+                                                        form(action="/admin/manageProduct/removeImage" method="POST" id=`removeImg${pro.id}`)
+                                                            input(type="hidden" name="Info" value=`${index}Of${pro.id}`)
+                                                            button( type="button" class="absolute top-2 right-4 removeImage" data-id=`${pro.id}`)
+                                                                i(class="fas fa-times ")
+
+
+
+                                            textarea(id="mytextarea2" name="desc" require placeholder="  Mô tả sản phẩm"  class="ml-8 mt-4 border-2 border-gray-300 rounded-md w-5/6 h-40 text-center " )
+                                                |#{pro.decs}
+                                            button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-28 ml-28 md:ml-6  mt-40") Sửa
+
+
+
+                                        
+                                    form(action="/admin/removeProduct" method="POST" class=(!Rights||Rights[6].value)?"flex w-1/3 justify-end":"hidden")
+                                        input(type="hidden" name="id" value=pro.id)
+                                        button 
+                                            i(class="fas fa-trash-alt ml-2 md:mt-0 mt-2 ")
+         
+        include mixins 
+        +headerAdmin()
+        +siderUser(User)

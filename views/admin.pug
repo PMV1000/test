@@ -1,0 +1,130 @@
+doctype html
+html
+    head
+        title admin
+        script(src="/javascripts/index.js")
+        script(src="/javascripts/main.js")
+        link(rel="icon" href="/image/thankyou.jpg" type="image/x-icon")
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
+        link(rel='stylesheet' href='../styles/tailwind.css')
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+        link(rel="stylesheet",href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous")
+    body
+        header
+        
+            
+            main(class='mt-20  h-full w-full')
+                if (errorAddAdmin)
+                    div.alert.alert-danger(role="alert" class="h-16") Tài Khoản Này Chưa Tồn Tại, Không Thể Chọn Làm Quản Trị Viên
+                h1(class="text-red-500 font-semibold text-4xl flex justify-center") Khu Vực Quản Trị Viên
+                div(class="container mt-12 h-auto w-full font-medium")
+                    ul(class="nav nav-tabs md:text-xl text-sm  ", id="myTab", role="tablist" )
+                        li(class=((type && type==="contentAdmin"?"hidden":"nav-item w-32 md:w-60 text-center ")),   role="presentation")
+                            a(class=((type && type==="contentAdmin"?"hidden":"nav-link active border-2 ")), id="right-tab", data-bs-toggle="tab", href="#right", role="tab", aria-controls="right", aria-selected="true") Phân Quyền
+                        li(class=((type && type==="contentAdmin"?"hidden":"nav-item w-32 md:w-60 text-center ")),   role="presentation")
+                            a(class=((type && type==="contentAdmin"?"hidden":"nav-link border-2 ")), id="addAdmin-tab", data-bs-toggle="tab", href="#addAdmin", role="tab", aria-controls="addAdmin", aria-selected="true") Thêm Quản Trị Viên
+                        li(class="nav-item w-32 md:w-60 text-center", role="presentation")
+                            a(class=((type && type==="contentAdmin"?"nav-link active border-2 ":"nav-link  border-2")), id="manageUser-tab", data-bs-toggle="tab", href="#manageUser", role="tab", aria-controls="manageUser", aria-selected="false") Quản Lí Người Dùng 
+                        li(class="nav-item w-32 md:w-60 text-center", role="presentation")
+                            a(class="nav-link border-2", href="admin/manageCategory", role="tab", aria-controls="manageCategory", aria-selected="false") Danh Mục Sản Phẩm
+                        li(class="nav-item w-32 md:w-60 text-center", role="presentation")
+                            a(class="nav-link border-2", href="admin/manageProduct", role="tab", aria-controls="manageProduct", aria-selected="false") Sản Phẩm
+                    div(class="tab-content md:p-20 px-2 py-8", id="myTabContent")
+                        div(class=((type && type==="contentAdmin"?"hidden":"tab-pane fade show active  ")), id="right", role="tabpanel", aria-labelledby="right-tab")
+                            h3(class="text-red-400 text-2xl text-center w-full") Phân Quyền
+                            table(class="md:mt-20 m-8  md:text-xl  w-full md:ml-36")
+                                thead(class="h-20")
+                                    tr(class="h-8")
+                                        th(class="w-3/5") Nhóm Quyền
+                                        th Quản Lí Nội Dung
+                                if(Rights &&Rights.typeOfSubAccount && Rights.typeOfSubAccount[0])
+                                    tbody
+                                        tr(class="font-medium h-12" )
+                                            td(colspan="2") Quyền Tài Khoản 
+                                        tr(class="font-normal")
+                                            td Xóa Tài Khoản Người Dùng
+                                            td(class="text-start") 
+                                                input(type="checkbox", id="removeAccount" class="ml-20  checkboxRight " checked=Rights.typeOfSubAccount[0].rights[0].value, data-id=Rights.typeOfSubAccount[0].rights[0].name)
+                                        tr(class="font-medium h-12" )
+                                            td(colspan="2") Quyền Danh Mục Sản Phẩm 
+                                        tr(class="font-normal")
+                                            td Thêm Danh Mục Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox", id="addCategory" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[1].value, data-id=Rights.typeOfSubAccount[0].rights[1].name)
+                                        tr(class="font-normal")
+                                            td Sửa Danh Mục Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox", id="editCategory" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[2].value, data-id=Rights.typeOfSubAccount[0].rights[2].name)
+                                        tr(class="font-normal")
+                                            td Xóa Danh Mục Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox",id="removeCategory" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[3].value, data-id=Rights.typeOfSubAccount[0].rights[3].name)
+
+                                        tr(class="font-medium h-12" )
+                                            td(colspan="2") Quyền Sản Phẩm 
+                                        tr(class="font-normal")
+                                            td Thêm Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox", id="addProduct" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[4].value, data-id=Rights.typeOfSubAccount[0].rights[4].name)
+                                        tr(class="font-normal")
+                                            td Sửa Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox",  id="EditProduct" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[5].value, data-id=Rights.typeOfSubAccount[0].rights[5].name)
+                                        tr(class="font-normal")
+                                            td Xóa Sản Phẩm
+                                            td(class="text-start") 
+                                                input(type="checkbox",id="removeProduct" class="ml-20  checkboxRight" checked=Rights.typeOfSubAccount[0].rights[6].value, data-id=Rights.typeOfSubAccount[0].rights[6].name)
+                        div(class=((type && type==="contentAdmin"?"hidden":"tab-pane fade  ")), id="addAdmin", role="tabpanel", aria-labelledby="addAdmin-tab")
+                            h3(class="text-red-400 text-2xl text-center md:ml-12 w-full") Thêm Quản Trị Viên
+                            form(class="mt-12 w-full md:ml-48 ml-8 " action="/admin/addAdmin" method="POST")
+                                input(class="hidden" name='survive' )
+                                input(class="border-2 border-gray-300 rounded-md w-48 ml-16  mt-6 h-6 p-2 text-lg text-gray-500 " name="username"  autocomplete="on" required placeholder="UserName")
+                                input(class="border-2 border-gray-300 rounded-md w-48 ml-16  mt-6 h-6 p-2 text-lg text-gray-500 " name="email"  autocomplete="on" required placeholder="Email")
+                                
+
+                                input(class="border-2 border-gray-300 rounded-md w-48 ml-16  mt-6 h-6 p-2 text-lg text-gray-500 hidden" name="password"  placeholder="password")
+                                select(class="border-2 border-gray-300 rounded-md w-48 ml-16  mt-8 h-8  text-sm text-gray-500 " name= "type" required)
+                                    option(value='' disable selected ) Chọn Loại Tài Khoản Quản Trị
+                                    option(value='admin') Tài Khoản Quản Trị Viên
+                                    option(value='contentadmin') Tài Khoản Quản Trị Nội Dung
+                                div(class="w-3/4 flex justify-center  ")
+                                    button( type="submit" class="bg-red-400 text-white h-9 p-1 mr-  rounded-md w-32  mt-8") Thêm
+                                button(class="w-full ml-24 text-sm text-red-500 font-semibold md:text-lg flex mt-4 ") chưa có tài khoản?
+                                
+                        div(class=((type && type==="contentAdmin"?"tab-pane fade show active":"tab-pane fade ")), id="manageUser", role="tabpanel", aria-labelledby="manageUser-tab")
+                            h3(class="text-red-400 text-2xl text-center w-full") Danh Sách Người Dùng
+                            div(class="w-full h-auto mt-20 bg-yellow-100 px-2") 
+                                div(class="flex overfow-x-auto")
+                                    table(class="overflow-x-auto text-center w-auto")
+                                        thead(class="h-20")
+                                            tr(class="h-8")
+                                                th(class="w-32") Id
+                                                th(class="w-60 ") Tên Tài Khoản 
+                                                th(class="w-60 ") Loại Tài Khoản 
+                                                th(class="w-60 ") Thời Gian Tạo
+                                                th(class=(type!=="contentAdmin"||Rights[0].value)?"w-60":"hidden")
+                                        tbody
+                                            each User in user  
+                                                tr(class="h-10 m-1 ")
+                                                    th #{User.id}
+                                                    th #{User.userName}
+                                                    th #{User.typeAccount}
+                                                    th #{User.createAt.toLocaleString('vi-VN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Ho_Chi_Minh',hour12:false})}
+                                                    th(class=(type!=="contentAdmin"||Rights[0].value)?"":"hidden")
+                                                        form(action="/admin/removeUser" method="POST")
+                                                            input(class="hidden" name="UserId" value=User.id)
+                                                            button 
+                                                                i(class="fas fa-trash-alt" type="submit")
+                                                            //- i(class="fas fa-sync-alt hidden")
+                                          
+                             
+
+
+                        div(class="tab-pane fade ", id="manageCategory", role="tabpanel", aria-labelledby="manageCategory-tab")
+                        div(class="tab-pane fade", id="manageProduct", role="tabpanel", aria-labelledby="manageProduct-tab")
+        include mixins
+        +headerAdmin("admin")
+        +siderUser(info)
+

@@ -1,0 +1,146 @@
+html
+    head
+        title Manage Category
+        script(src="/javascripts/main.js")
+        script(src="/javascripts/index.js")
+        link(rel="icon" href="/image/thankyou.jpg" type="image/x-icon")
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
+        link(rel='stylesheet' href='../styles/tailwind.css')
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+        link(rel="stylesheet",href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous")
+        link(rel="stylesheet", href="/index.css")
+        
+
+    body
+        header
+       
+        main(class='mt-6 md:p-20 py-6 h-full w-full') 
+            div(id="CatModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+                div(class="modal-dialog")
+                    div(class="modal-content")
+                        div(class="modal-header")
+                            h5(class="modal-title text-center text-red-500" id="exampleModalLabel") Xác Nhận Xóa
+                            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                        div(class="modal-body text-gray-500 font-medium")
+                            |Bạn Chắc Chắn Muốn Xóa Danh Mục Này Chứ. Việc Khôi Phục Lại Sẽ Gặp Nhiều Khó Khăn 
+                        div(class="modal-footer")
+                            button(type="button" class=" w-28 h-9 ml-4 border-red-400  border-2 text-red-500 rounded-md " data-bs-dismiss="modal") Thoát 
+                            button(type="button" class="btn btn-warning w-20 text-white" id="confirmCat") Xóa
+            if (error&&error[0])
+                div.alert.alert-danger(role="alert" class="h-16") Danh Mục Này Đã Tồn Tại
+            if(error && error[1])
+                div.alert.alert-danger(role="alert" class="h-16") Sản Phẩm Không Tồn Tại
+            h3(class="text-red-400 text-2xl mt-12 text-center w-full") Danh Sách Danh Mục Sản Phẩm
+            div(class=" w-full px-3  mt-12 flex justify-end relative")
+                button(class=(!Rights||Rights[1].value)?"":"hidden") 
+                    i(class="fas fa-plus addCategory")
+                div(class=" hidden absolute right-10 shadow z-50 w-52 h-56 bg-white text-gray-500 p-3 formAddCat " id="formTempId" )
+                    div(class="w-full flex justify-end bg-yellow")
+                        button
+                            i(class="fas fa-times iconsmall  addCategory button-times" data-id="formTempId")
+                    h5(class="  text-red-500 font-semibold text-center w-full") Thêm Danh Mục
+                    form(class="  h-full w-full  space-y-4 flex flex-col text-sm " action="/admin/AddCategory" method="POST")
+                        input(class="border-2 border-gray-300 rounded-md w-36  mt-2 ml-2 h-6 p-2  text-gray-500 " name="category" autocomplete="on" required placeholder="CategoryName")  
+                        select(class="border-2 border-gray-300 rounded-md w-44 ml-2  mt-2 h-8 text-xs  text-gray-500 " name="Supcategory" )
+                            option(value="" disable selected) Chọn Danh Mục Cha(Nếu có)
+                            each cat in category
+                                    option(value=cat[1]) #{cat[0]}
+
+                        button( type="submit" class="text-white bg-red-400 h-7 p-1 rounded-md w-20  ml-12 mt-4 ") Thêm
+
+            div(class="w-full h-auto mt-3  px-2") 
+                div(class="accordion accordion-flush" id="accordionFlushExample")
+                    each cat, index in category
+
+                        div(class="accordion-item")
+                        h2(class="accordion-header flex relative hoverButton"  data-id=`${index}`)
+                            button(class="accordion-button collapsed font-medium text-2xl flex-shrink-0 relative " type="button" data-bs-toggle="collapse" data-bs-target=`#flush-collapseOne${index}` aria-expanded="false" aria-controls="flush-collapseOne") #{cat[0]}
+                            button(class=(!Rights||Rights[2].value)?"flex justify-end w-2 h-2 mt-4 md:ml-6 text-sm flex-shrink-0 buttonEdidCat ":"hidden" data-id=index)
+                                i(class="fas fa-edit " )
+                                   
+                            div(class="hidden absolute left-12 top-2 shadow z-40 w-52 h-56 bg-white font-medium text-sm text-red-300 p-2 overflow-y-auto overflow-x-hidden " id=`listChild${index}` )
+                                h5(class="text-lg font-semibold mt-2 text-center w-full mb-4 relative") Danh mục con
+                                    button(class=" showFormAddChild" data-id=index)
+                                        i(class="fas fa-plus text-gray-600 iconsmall ml-2")
+                                    div(class="hidden absolute rigth-2 shadow z-50 w-36 h-32 bg-white text-gray-500 p-2" id=`formAddChild${index}`  )
+                                        h5(class="text-sm font-semibold my-2 text-center w-full ") Thêm danh mục con
+                                        form(action="/admin/manageCategory/addChild" method="POST")
+
+                                            select(class="border-2 border-gray-300 rounded-md w-28 ml-2  h-6 text-xs  text-gray-500 " name="id" )
+                                                option(value="" disable selected) Chọn Danh Mục
+                                                each cate in category
+                                                    if(!CategoryChild[index].includes(cate)|| cate[1] !== cat[1])
+                                                        option(value=cate[1]) #{cate[0]}
+                                            input(type="hidden" name="supId" value=cat[1])
+                                            button(class=" bg-red-500 rounded-md h-6 w-16 text-sm  mt-2 text-gray-600" type="submit" ) Thêm
+
+
+                                if(CategoryChild[index].length===0)
+                                    p Không chứa danh mục con nào 
+                                each child in CategoryChild[index]
+                                    if(child)
+                                        div(class="w-full flex")
+                                            p(class="flex-1 w-2/3 justify-start") #{child[0]}
+                                            form(action="/admin/manageCategory/removeChild" method="POST" class="w-8 ml-2 flex justify-end")
+                                                input(type="hidden" name="id" value=child[1])
+                                                input(type="hidden" name="supId" value=cat[1])
+                                                button(class="  text-sm text-gray-600" type="submit")
+                                                    i(class="fas fa-trash-alt")
+
+                            div(class=" hidden absolute right-1 top-8 shadow z-50 w-48 h-48 bg-white text-gray-500 p-3" id=`formEditCat${index}` )
+                                div(class="w-full flex justify-end bg-yellow")
+                                    button
+                                        i(class="fas fa-times iconsmall buttonEdidCat" data-id=index)
+                                h5(class="  text-red-500 font-semibold text-center w-full") Chỉnh Sửa
+                                form(class="  h-full w-full  space-y-4 flex flex-col text-sm" action="/admin/editCategory" method="POST")
+                                    input(class="border-2 border-gray-300 rounded-md w-36  mt-2 h-6 p-2  text-gray-500 " name="category" value=cat[0] autocomplete="on" required placeholder="CategoryName")
+                                    input(type="hidden" name="id" value=cat[1])
+                                    select(class="border-2 border-gray-300 rounded-md w-40  mt-2 h-8 text-xs  text-gray-500 " name="Supcategory" )
+                                        option(value="" disable selected) Chọn Danh Mục Cha(Nếu có)
+                                        each cate in category
+                                            if(cate[1] !== cat[1])
+                                                option(value=cate[1]) #{cate[0]}  
+                                    button( type="submit" class="text-white bg-red-400 h-7 p-1 rounded-md w-20  ml-8 mt-3") Sửa
+                            form(action="/admin/removeCategory" method="POST" class=(!Rights||Rights[3].value)?"":"hidden" id=`formReMCat${index}`)
+                                input(type="hidden" name="category" value=cat[1])
+                                button(class="flex justify-end w-2 h-2 mt-4 ml-2 text-sm flex-shrink-0 buttonRreMoveCat"  data-bs-toggle="modal" data-bs-target="#CatModal" type="button" data-id=index)
+                                    i(class="fas fa-trash-alt")
+                        
+                        div(id=`flush-collapseOne${index}` class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample")
+                            div(class="accordion-body space-y-4 w-full")
+                                div(class=" w-full px-1  my-6 flex justify-end relative ")
+                                    button()
+                                        i(class="fas fa-plus")
+                                    div(class=" hidden absolute right-10 shadow z-50 w-52 h-48 bg-white text-gray-500 p-3")
+                                        div(class="w-full flex justify-end bg-yellow")
+                                            button
+                                               
+                                                i(class="fas fa-times iconsmall ")
+                                        h5(class="  text-red-500 font-semibold text-center w-full") Thêm Sản Phẩm
+                                        form(class="  h-full w-full  space-y-4 flex flex-col text-sm ml-6" action="/admin/manageCategory/addProduct" method="POST")
+                                            input(class="border-2 border-gray-300 rounded-md w-36  mt-2 h-6 p-2  text-gray-500 " name="product" autocomplete="on" required placeholder="ProductId")  
+                                           
+                                            input(type="hidden" name="category" value=cat[1])
+                                    
+                                            button( type="submit" class="text-white bg-red-400 h-7 p-1 rounded-md w-20  ml-8 mt-4") Thêm
+
+                                each pro in productInCategory[index]
+                                    if(pro)   
+                                        div(class="flex justify-between")
+                                            
+                                            p #{pro[1]}
+                                            form(action="/admin/manageCategory/removeProduct" method="POST" )
+                                                input(type="hidden" name="category" value=cat[1])
+                                                input(type="hidden" name="product" value=pro[0])
+                                                button(type="submit")
+                                                    i(class="fas fa-trash-alt")
+
+                  
+
+                  
+            script(src="../bs.js")
+        include mixins 
+        +headerAdmin()
+        +siderUser(User)
