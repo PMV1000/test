@@ -17,7 +17,7 @@ html
             
             main(class='mt-20  h-full w-full')
                 if (errorAddAdmin)
-                    div.alert.alert-danger(role="alert" class="h-16") Tài Khoản Này Chưa Tồn Tại, Không Thể Chọn Làm Quản Trị Viên
+                    div.alert.alert-danger(role="alert" class="h-16" data-id="alerterror") Tài Khoản Này Chưa Tồn Tại, Không Thể Chọn Làm Quản Trị Viên
                 h1(class="text-red-500 font-semibold text-4xl flex justify-center") Khu Vực Quản Trị Viên
                 div(class="container mt-12 h-auto w-full font-medium")
                     ul(class="nav nav-tabs md:text-xl text-sm  ", id="myTab", role="tablist" )
@@ -94,6 +94,17 @@ html
                                 button(class="w-full ml-24 text-sm text-red-500 font-semibold md:text-lg flex mt-4 ") chưa có tài khoản?
                                 
                         div(class=((type && type==="contentAdmin"?"tab-pane fade show active":"tab-pane fade ")), id="manageUser", role="tabpanel", aria-labelledby="manageUser-tab")
+                            div(id="UModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true")
+                                div(class="modal-dialog")
+                                    div(class="modal-content")
+                                        div(class="modal-header")
+                                            h5(class="modal-title text-center text-red-500" id="exampleModal") Xác Nhận Xóa
+                                            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                                        div(class="modal-body text-gray-500 font-medium")
+                                            |Bạn Chắc Chắn Muốn Xóa Tài Khoản Này Chứ? Hành Động này sẽ xóa vĩnh viễn vào không thể khôi phục 
+                                        div(class="modal-footer")
+                                            button(type="button" class=" w-28 h-9 ml-4 border-red-400  border-2 text-red-500 rounded-md " data-bs-dismiss="modal") Thoát 
+                                            button(type="button" class="btn btn-warning w-20 text-white" id="confirmU") Xóa
                             h3(class="text-red-400 text-2xl text-center w-full") Danh Sách Người Dùng
                             div(class="w-full h-auto mt-20 bg-yellow-100 px-2") 
                                 div(class="flex overfow-x-auto")
@@ -113,10 +124,10 @@ html
                                                     th #{User.typeAccount}
                                                     th #{User.createAt.toLocaleString('vi-VN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Ho_Chi_Minh',hour12:false})}
                                                     th(class=(type!=="contentAdmin"||Rights[0].value)?"":"hidden")
-                                                        form(action="/admin/removeUser" method="POST")
+                                                        form(action="/admin/removeUser" method="POST" id=`FormRU${User.id}`)
                                                             input(class="hidden" name="UserId" value=User.id)
-                                                            button 
-                                                                i(class="fas fa-trash-alt" type="submit")
+                                                        
+                                                            i(class="fas fa-trash-alt " data-bs-toggle="modal" type="button" data-bs-target="#UModal"  data-id=User.id)
                                                             //- i(class="fas fa-sync-alt hidden")
                                           
                              

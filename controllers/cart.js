@@ -31,7 +31,7 @@ export const show = async (req,res)=>{
         res.render('cart', { data: productData, total,user:User });
         } 
         else{
-            redirect("/login")
+            res.redirect("/login")
         }
 
         

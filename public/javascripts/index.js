@@ -190,13 +190,20 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
   if(BTTexit&&currentForm){
     BTTexit.addEventListener('click',()=>{
       const divContains =document.querySelector(divContainId) 
+   
       const Inputs = Array.from(currentForm.querySelectorAll('input:not([type="hidden"])'));
-      const Selec =Array.from(currentForm.querySelector('select'))
-      if(Selec&&Selec.length!==0){
-        Selec.forEach(input=>{
-          input.value=''
-        })
-      }
+      if(currentForm.querySelectorAll('select')){
+        console.log(currentForm)
+        const Selec =Array.from(currentForm.querySelectorAll('select'))
+        console.log(Selec)
+        if(Selec&&Selec.length!==0){
+          
+          Selec.forEach(input=>{
+            console.log("trước",input.value,input)
+          input.value=input.options[0].value //  input.selectedIndex=0 
+           console.log("sau",input.value,input)
+          })
+        }}
 
       divContains.classList.add("hidden")
       Inputs.forEach(input=>{
@@ -380,8 +387,9 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
       const buttonActives =document.querySelectorAll('[data-status]')
       if(buttonActives){
         buttonActives.forEach(button=>{
-          if(button&& button.getAttribute('data-id')&&button.getAttribute('data-status')&&button.getAttribute('data-status')===false){
+          if(button&& button.getAttribute('data-id')&&button.getAttribute('data-status')&&button.getAttribute('data-status')==="true"){
             const TR = document.querySelector(`#tr${ button.getAttribute('data-id')}`)
+            console.log("tr","vao")
             if(TR){
               console.log("tr",TR)
               TR.classList.add("hidden")
@@ -395,11 +403,13 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
 
   if(ButtonFilteractive){
     ButtonFilteractive.addEventListener("click",()=>{
+      console.log("nhan")
       const buttonUnActives =document.querySelectorAll('[data-status]')
       if(buttonUnActives){
         buttonUnActives.forEach(button=>{
-          if(button&& button.getAttribute('data-id')&&button.getAttribute('data-status')&&button.getAttribute('data-status')===true){
-            const TR = document.querySelector(`#tr${ button.getAttribute('data-id')}`)
+          if(button&&button.getAttribute('data-id')&&button.getAttribute('data-status')==="false"){
+            const TR = document.querySelector(`#tr${button.getAttribute('data-id')}`)
+            
             if(TR){
               TR.classList.add("hidden")
             }
@@ -410,10 +420,29 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
   }
 
 
+
+  // hàm ẩn thông báo 
+  const alerts = document.querySelectorAll(`[data-id="alerterror"]`);
+  if(alerts,"u"){
+    console.log(alerts)
+    alerts.forEach(alr=>{
+      if(!alr.classList.contains("hidden")){
+        setTimeout(()=>{
+          console.log("dang doi")
+            alr.classList.add("hidden")
+        },5000)
+      }
+    }
+    )
+  }
+
   //Gọi Các Hàm Confirm
 
   conFirm(".buttonRreMoveCat",'#confirmCat',"formReMCat")
   console.log("đã gọi hàm console.log")
+
+  conFirm(".buttonRMUR","#confirmU","FormRU")
+  conFirm(".btnRMPR","#confirmPro","FRMPRO")
 
 
 //...
@@ -422,5 +451,39 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
   //Gọi Hàm Exit
   exit("#ButtonOutPro","#FormAddProduct","#addProducts")
   console.log("đã gọi hàm console")
+
+
+  const closeEditPros = document.querySelectorAll(".buttonCloseFormEdit")
+  if(closeEditPros){
+  
+    closeEditPros.forEach(button=>{
+      if(button&&button.getAttribute("data-id")){
+        // console.log(button.getAttribute("data-id"))
+        exit(`#buttonCloseFormEdit${button.getAttribute("data-id")}`,`#EditProduct${button.getAttribute("data-id")}`,`#FormEditProduct${button.getAttribute("data-id")}`)
+      }
+    })
+  }
+
+  exit("#buttonOutADDC","#formOutADDC","#formTempId")
+  const closeEditCat = document.querySelectorAll(".buttonOutEdidCat")
+    console.log(closeEditCat,"h")
+  if(closeEditCat){
+
+  
+    closeEditCat.forEach(button=>{
+      console.log(button)
+      if(button&&button.getAttribute("data-id")){
+        
+        console.log(`#butnEditCat${button.getAttribute("data-id")}`,`#FEditCat${button.getAttribute("data-id")}`,`#formEditCat${button.getAttribute("data-id")}`)
+        exit(`#butnEditCat${button.getAttribute("data-id")}`,`#FEditCat${button.getAttribute("data-id")}`,`#formEditCat${button.getAttribute("data-id")}`)
+      }
+    })
+  }
+
+  exit("#BTNOutChangePass","#FormChangePass","#formChangePass")
+  exit("#btnChangeInfo","#formChangeInfo","#formChangeInfo")
+
+
+  //..
 
     })

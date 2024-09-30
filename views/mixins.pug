@@ -20,20 +20,20 @@ mixin header(title,user=null)
           i(class="fas fa-bars")
         
         div(class='flex flex-col justify-center w-auto h-auto') 
-          form.d-flex.bg-white.text-black.rounded-md.mr-8.mt-1.ml-2(action="/search" method='get') 
+          form.d-flex.bg-white.text-black.rounded-md.mr-8.mt-1.ml-2(action="/search") 
             input.form-control.me-2.border-white.border-none.shadow-none(
               type="search"
               placeholder="Tìm kiếm..."
               aria-label="Search"
               id='input_search'
-              name='searchValue'
+              name='searchkey'
               
             )
             button.btn.btn-outline-primary.border-white.text-gray-700(type="submit")
               i.fas.fa-search
           div(class='h-auto w-60 ml-4 bg-yellow border-1  hidden' id='suggest')
         a( href="/login" class=" no-underline  border-3 border-white rounded-md w-28   flex font-medium  mt-1 text-sm h-8 mr-1 md:h-10 md:mr-3  md:text-lg p-1 text-white" class=(user!==null?'hidden' :'') ) Đăng Nhập    
-        a(href='/cart' class='bg-transparent text-white' id="cart-icon" class=(user!==null? '':'hidden')) 
+        a(href=user!==null?'/login':'/cart' class='bg-transparent text-white' id="cart-icon" class=(user!==null? '':'hidden')) 
           i(class='fa fa-shopping-cart p-1 hover:bg-gray-700 focus:text-gray-100')
         button(id="user-icon" class=(user!==null? '':'hidden'))
           i(class="fas fa-user-circle mt-2 ml-4 z-7 BTTsiderUser") 
@@ -67,10 +67,10 @@ mixin login(type, error)
   main(class="h-auto w-full")
             a(href="/" class="text-yellow-500 ") 
                 i(class="fas fa-arrow-left m-4")
-            div(class="rounded-lg w-80 md:w-2/5 h-88 md:h-2/3 bg-white shadow  mx-auto my-8")
-                form(class="p-3" action='/login/signIn' method="POST")
+            div(class="rounded-lg w-80 md:w-2/5 h-auto md:h-2/3 bg-white shadow mx-auto my-8")
+                form(class="p-1 mt-4" action='/login/signIn' method="POST")
                     input(type="hidden" ,value=type,name="type")
-                    h1(class="text-red-300 font-bold md:text-2xl text-xl w-full ml-20 md:ml-48") 
+                    h1(class="w-5/6 ml-8 text-red-300 font-bold md:text-2xl text-xl w-6/7 text-center") 
                       | #{type==="login"? 'Đăng Nhập' : 'Đăng Kí'}
                     input(class="border-2 border-gray-300 rounded-md w-2/3 ml-12 md:ml-20 mt-6 h-6 p-2 text-lg text-gray-500 " name="username"  autocomplete="on" required placeholder="UserName")
                     p(class="w-full text-red-600 text-sm font-normal text-start m-0 px-16 md:px-24" class=((error&&Array.isArray(error)&&error[1])?'':'hidden'))
@@ -80,19 +80,19 @@ mixin login(type, error)
                       |#{(error && Array.isArray(error)&&error[0])?error[0]:''}
                     input(class="border-2 border-gray-300 rounded-md w-2/3 ml-12 md:ml-20  mt-2 md:mt-3 h-6 p-2 text-lg text-gray-500 " name="password" type="password"  required placeholder="Password")
                     hr(class="mt-4 md:mt-6 text-red-300 w-full")
-                    label(htmlFor="goole" class=" w-full h-2 md:mt-4 text-center md:text-lg text-md text-red-400 md:font-medium") Hoặc 
+                    label(htmlFor="goole" class=" w-5/6 ml-8 h-2 md:mt-4 flex justify-center mr-8 md:text-lg text-md text-red-400 md:font-medium") Hoặc 
                     a(href="#" class=" no-underline  text-center border-2 border-gray-500 rounded-md w-3/4 ml-10 md:ml-16 flex md:mt-10  mt-6 md:mb-3 md:mt-3 md:h-10 h-8  text-md text-gray-700 "  ) 
                         img(class="h-7 w-10 bg-transparent" src="/image/google.webp")
-                        span(class="text-sm mt-1  mt-1 md:font-medium  ") 
+                        span(class="text-sm mt-1 md:w-2/3 mt-1 md:font-medium  text-center ") 
                           | #{type==="login"?'Đăng Nhập':'Tiếp Tục'} Với Google
                     a( href="#" class=" no-underline  border-2 border-gray-500 rounded-md w-3/4 ml-10 md:ml-16 flex  mt-2  md:h-10 h-8  text-md text-gray-700 "  ) 
                         img(class="h-7 md:h-9 w-10 bg-transparent" src="/image/facebook.webp")
                         span(class="text-sm md:w-2/3 mt-1 md:font-medium  text-center ") 
                           | #{type==="login"?'Đăng Nhập':'Tiếp Tục'} Với Facebook
-                    button(type="submit" class="text-xl md:ml-28 lg:ml-48 ml-16 text-white bg-red-500 rounded-md p-1 font-medium h-9 w-40 mt-4") 
+                    button(type="submit" class="text-xl    ml-20  xl:ml-52 2xl:ml-60  text-center md:ml-32 text-white bg-red-500 rounded-md p-1 font-medium h-9 w-40 mt-4") 
                       |Đăng
                       |#{type==="login" ? "Nhập" : "Kí"}
-                    span(class="w-full flex justify-center text-sm md:text-lg flex mt-4 ")
+                    span(class="w-2/3 ml-16 md:ml-2/3 flex justify-end text-sm md:text-lg flex mt-4 mb-4 md:mb-8 ")
                       | #{type==="login"?'Chưa':'Đã'} có tài khoản?
                       a(href=(type==="login" ?'/signup' : '/login') class="text-red-500 font-semibold ml-1 ") 
                         | Đăng 
@@ -106,7 +106,7 @@ mixin headerAdmin(page)
           i(class="fas fa-user-circle BTTsiderUser")
         
 mixin siderUser(User)
-  sider(class=' bg-red-400 border-red-300 border-2 fixed top-0 right-0 h-full py-8 w-56 z-10 text-white  text-lg' id="siderUser")
+  sider(class=' bg-red-400 border-red-300 border-2 fixed top-0 right-0 h-full py-8 w-56 z-10 text-white  text-lg hidden' id="siderUser")
                 div(class=" h-auto w-full")
                     div(class='mt-10 ml-8 flex items-center justify-end  h-20')
                         |#{(User&&User.userName)?User.userName:"UN"}
@@ -115,25 +115,26 @@ mixin siderUser(User)
                        
                         button(class="p-3 h-16 flex justify-start  hover:shadow  w-full border-t border-b border-pink-300   font-bold  hover:shadow-sm showInfoUser") Thông Tin Cá Nhân
                         div(class="absolute bg-yellow-50 top-12 right-32 z-10 h-48 w-56 text-gray-600 text-lg space-y-2 p-2 shadow hidden" id="infoUser")
-                            i(class="fas fa-pen ml-48 relative showFormChangeInFo" )
-                                form(class="absolute shadow bg-white top-16 right-0 h-44 w-44 hidden" action="/Edit/info" method="POST" id="formChangeInfo")
-                                  div(class="w-5/6 mt-2 flex justify-end")
-                                    button(class="showFormChangeInFo")
-                                      i(class="fas fa-times ")
-                                  input(type="hidden" name="id" value=(User&&User.id)?User.id:"")
-                                  input(class="border-2 border-gray-300 rounded-md w-2/3 ml-4 mt-6 h-6 p-2 text-sm-gray-500 " name="username" value=(User&&User.useName? User.useName:null) autocomplete="on" required ) 
-                                  input(class="border-2 border-gray-300 rounded-md w-2/3 ml-4  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 " value=(User&&User.email? User.email:null)  name="email" type="email"  autocomplete="on" )
-                                  button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-18 ml-8 mt-4") chỉnh sửa
+                          span(class="relative w-full ")
+                            i(class="fas fa-pen ml-48 showFormChangeInFo" )
+                            form(class="absolute shadow bg-white top-16 right-0 px-2 h-44 w-44 hidden" action="/Edit/info" method="POST" id="formChangeInfo")
+                              div(class="w-full mt-2 flex justify-end")
+                                button(class="showFormChangeInFo ")
+                                  i(class="fas fa-times " id="btnChangeInfo")
+                              input(type="hidden" name="id" value=(User&&User.id)?User.id:"")
+                              input(class="border-2 border-gray-300 rounded-md w-3/4 ml-4 mt-2 h-6 p-2 text-sm-gray-500 " name="username" value=(User&&User.userName? User.userName:"ji") autocomplete="on" required ) 
+                              input(class="border-2 border-gray-300 rounded-md w-3/4 ml-4  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 " value=(User&&User.email? User.email:null)  name="email" type="email"  autocomplete="on" )
+                              button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-18 ml-6 mt-4") chỉnh sửa
                             p(class="text-lg") userName: #{(User&&User.userName)?User.userName:"UN"}
                             p email : #{(User&&User.email)?User.email:"EM"}
                                
                        
                         button(class="p-3 h-16 flex justify-start font-bold border-t border-b border-pink-300  w-full  hover:shadow-sm relative showFormChangePass") Đổi Mật Khẩu 
                         div(class="absolute bg-white  top-12 right-24 z-15 h-48 w-56 text-gray-600 text-lg space-y-2 p-2 shadow hidden " id="formChangePass")
-                          form( action="/Edit/password" method="POST" class="h-auto w-full  space-y-3 px-2 ")
+                          form( action="/Edit/password" method="POST" id="FormChangePass" class="h-auto w-full  space-y-3 px-2 ")
                             h5(class="flex ml-8")
                               |Đổi mật khẩu
-                              i(class="fas fa-times ml-6 showFormChangePass")
+                              i(class="fas fa-times ml-6 " id="BTNOutChangePass")
                             input(type="hidden" name="id" value=(User&&User.id)?User.id:"")
                             input(class=" mt-8 ml-8 border-2 border-gray-300 rounded-md h-7 w-32" type="password" name="oldPass" required placeholder="Mật khẩu cũ" ) 
                             input(class="border-2 ml-8 border-gray-300 rounded-md h-7 w-32 mb-6" type="password"  name="NewPass" required placeholder="Mật khẩu mới" )
@@ -142,5 +143,23 @@ mixin siderUser(User)
                         form(action="/logout" method="POST")
                           input(type="hidden" name="id" value=(User&&User.id)?User.id:"")
                           button(type="submit" class="p-3 h-16 flex justify-start font-bold hover:shadow border-t border-b border-pink-300    hover:shadow-sm w-full") Logout
-                       
-script(src='/index.js' )
+mixin note ()
+   div(class=" fixed md:w-1/6 z-40 w-1/2 h-64  md:top-28 top-20 right-2 md:right-20 py-1 shadow-md px-3 space-y-3 text-red-400 bg-white ")
+
+    h6( class="text-red-500 text-center md:text-xl text-md ") Tài Khoản Đăng Nhập
+    div(class="mt-4  ml-3 relative text-sm md:text-md ")
+        h6( class="font-bold m-0") Admin:
+   
+        h6 user6 ; user6@example.com ; password6
+        
+      
+        
+    
+        h6( class="font-bold m-0") ContentAdmin:
+        h6 user1 ; user1@example.com ; password1
+        h6( class="font-bold m-0") User
+        h6 user2 ; user2@example.com ; pass
+
+
+
+

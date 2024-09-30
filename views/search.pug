@@ -1,6 +1,9 @@
 doctype html
 html
-    head 
+    head
+        title Shop Web
+        script(src="/javascripts/index.js")
+        script(src="/javascripts/main.js")
         link(rel="icon" href="/image/thankyou.jpg" type="image/x-icon")
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
         link(rel='stylesheet' href='../styles/tailwind.css')
@@ -13,9 +16,9 @@ html
         +footer()
         +siderUser()
         main(class="mt-24 w-full h-auto")
-            div(class='text-xl text-gray-700 flex-1  flex flex-wrap gap-3  md:ml-2 w-full')
-                each pro in resuits
-                    +card(pro)
-
-
-        script(src='/index.js' )
+            div(class=(resuits.length>2?'text-xl text-gray-700 flex-1 flex flex-wrap gap-3  md:ml-2 w-full justify-center mr-4':'text-xl text-gray-700 flex-1 flex flex-wrap gap-3  md:ml-2 w-full'))
+                if(!resuits)
+                    em(class="w-full mt-10 text-center mr-6 text-gray-500 text-md font-semibold ") Không có sản phẩm nào phù hợp
+                else
+                    each pro in resuits
+                        +card(pro)

@@ -2,6 +2,7 @@ doctype html
 html
   head
     title Home
+    script(src="/javascripts/index.js")
     script(src="/javascripts/main.js")
     link(rel="icon" href="/image/thankyou.jpg" type="image/x-icon")
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
@@ -18,6 +19,7 @@ html
       +header('home',User)
     else
       +header("home")
+
     main(class='w-full mx-12 py-28 over-flow-y-scroll relative ')
 
       div(class='text-xl text-gray-700 flex-1  flex flex-wrap gap-3 mb-24 md:ml-2 w-full')

@@ -47,12 +47,23 @@ html(lang="en")
     body
         header
         main(class='mt-20 md:p-20 py-6 h-full w-full')
+            div(id="ProModal" class="modal fade" tabindex="-1" aria-labelledby="example" aria-hidden="true")
+                div(class="modal-dialog")
+                    div(class="modal-content")
+                        div(class="modal-header")
+                            h5(class="modal-title text-center text-red-500" id="example") Xác Nhận Xóa
+                            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                        div(class="modal-body text-gray-500 font-medium")
+                            |Bạn Chắc Chắn Muốn Xóa Sản Phẩm Này Không ?
+                        div(class="modal-footer")
+                            button(type="button" class=" w-28 h-9 ml-4 border-red-400  border-2 text-red-500 rounded-md " data-bs-dismiss="modal") Thoát 
+                            button(type="button" class="btn btn-warning w-20 text-white" id="confirmPro") Xóa
             h3(class="text-red-400 text-2xl mt-2 text-center w-full") Danh Sách Sản Phẩm
             div(class=" ml-12  text-gray-500  w-5/6 relative")
                 div(class="   flex justify-start ")
                     button(class="mt-16")
                         i(class="fas fa-filter buttonopenfiter ")
-                    div(class="absolute letf-4 space-y-2 top-20 shadow h-36 py-2 w-24 bg-white text-sm z-50 text-gray-600 " id="filterPro")
+                    div(class="absolute letf-4 space-y-2 top-20 shadow h-36 py-2 w-24 bg-white text-sm z-50 text-gray-600 hidden" id="filterPro")
                         button(id="filterON") Đang Hoạt Động
                         hr(class="w-full")
                         button(id="filterOFF") Dừng Hoạt Động
@@ -100,14 +111,14 @@ html(lang="en")
                                 td #{pro.decs}
                                 td #{pro.price}.000 đ
                                 td 
-                                    button(class=pro.deleted?"h-10 w-32 p-1 text-center bg-red-600 text-gray-100":"btn btn-success h-10 w-32 p-1 text-center " data-status=pro.deleted data-id=pro.id)
+                                    button(class=(pro.deleted?"h-10 w-32 p-1 text-center bg-red-600 text-gray-100 rounded-md":"btn btn-success h-10 w-32 p-1 text-center ") data-status= pro.deleted?"false":"true" ,  data-id=pro.id)
                                         span(class=" text-sm") #{pro.deleted?"Ngừng Hoạt Động":"Đang Hoạt động"}
                                 td(class="flex w-full") 
                                     button(class=(!Rights||Rights[5].value)?"flex w-1/3 justify-start mr-1  md:justify-center mt-2 buttonOpenFormEdit":"hidden" data-id=pro.id) 
                                         i(class="fas fa-edit ml-2 md:mr-2 " ) 
                                     div(class="hidden absolute md:right-32 top-10 right-3 p-4 w-auto md:p-0  h-auto bg-yellow-100 z-50" id=`FormEditProduct${pro.id}`) 
                                         div(class="mr-2  w-full mt-2 flex justify-end")
-                                            button( class="buttonOpenFormEdit")
+                                            button( class="buttonCloseFormEdit" id=`buttonCloseFormEdit${pro.id}` data-id=pro.id)
                                                 i(class="fas fa-times ")
                                         h3(class=" text-2xl text-red-500 font-semibold text-center w-full") Chỉnh Sửa Sản Phẩm
                                         form(class=" mt-8 h-full ml-10 w-full  space-y-4 " action="/admin/editProduct" method="POST" id=`EditProduct${pro.id}`)
@@ -133,10 +144,10 @@ html(lang="en")
 
 
                                         
-                                    form(action="/admin/removeProduct" method="POST" class=(!Rights||Rights[6].value)?"flex w-1/3 justify-end":"hidden")
+                                    form(action="/admin/removeProduct" id=`FRMPRO${pro.id}` method="POST" class=(!Rights||Rights[6].value)?"flex w-1/3 justify-end":"hidden")
                                         input(type="hidden" name="id" value=pro.id)
-                                        button 
-                                            i(class="fas fa-trash-alt ml-2 md:mt-0 mt-2 ")
+                                        
+                                        i(class="fas fa-trash-alt ml-2 md:mt-0 mt-2 btnRMPR" data-bs-toggle="modal" data-bs-target="#ProModal" type="button" data-id=pro.id)
          
         include mixins 
         +headerAdmin()

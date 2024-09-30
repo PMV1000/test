@@ -57,7 +57,7 @@ export const editPassword =async(req,res)=>{
         
     }
     else{
-        res.cookies("errorPassWordEdit","sai mật khẩu",{expires:new Date(Date.now()+15000)})
+        res.cookie("errorPassWordEdit","sai mật khẩu",{expires:new Date(Date.now()+15000)})
     }
     res.redirect("back")
 }

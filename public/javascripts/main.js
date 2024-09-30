@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(buttonShowInfo&&Info){
     buttonShowInfo.addEventListener('click',()=>{
         Info.classList.toggle("hidden")
+        Info.addEventListener("mouseleave",()=>{
+            Info.classList.add("hidden") 
+        })
     })}
 
     const buttonShowChangeInfo = document.querySelector('.showFormChangeInFo')

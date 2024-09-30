@@ -4,6 +4,8 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title= products.name || Document
+    script(src="/javascripts/index.js")
+    script(src="/javascripts/main.js")
     link(rel="stylesheet", href="/index.css")
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css')
     link(rel='stylesheet' href='../styles/tailwind.css')
@@ -22,7 +24,7 @@ html(lang="en")
     +sider()
     main(class="w-full h-auto p-4 mt-20 ")
         if (Message && Message[0])
-            div.alert.alert-warning(role="alert" class="h-16") Bạn Chưa Đăng Nhập
+            div.alert.alert-warning(role="alert" class="h-16" data-id="alerterror") Bạn Chưa Đăng Nhập
         div(class="md:flex ")
             div(id="carouselExampleCaptions" class="carousel slide mb-20" data-bs-ride="carousel")
                 div(class="carousel-indicators md:m-0 mt-20 ")

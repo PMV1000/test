@@ -23,6 +23,10 @@ export const show =async (req,res)=>{
 
     }
 
+    else{
+        res.redirect('/login')
+    }
+
    
 
 }
@@ -37,49 +41,53 @@ export const Showcategory = async (req,res)=>{
             
             res.redirect('/login')
         }
-        }
-    const Error = [];
-    const Category = await category.find({deleted:false})
-    const CatName=await  Category.map(cat=>{return [cat.name,cat.id]})
-    const PromisePro = Category.map(async(item)=>{
-        const temp= await Promise.all( item.products.map(async (pro)=>{
-            const prod = await product.findOne({id:pro,deleted:false})
-            if(prod){
-            return [prod.id,prod.name]}
-        }))
-     
         
-        return temp;
-    })
-    const CategoryChild = await Promise.all( Category.map(async(item)=>{
-        const temp = await Promise.all(item.categoryChild.map(async (cat)=>{
-            const child = await category.findOne({id:cat, deleted:false})
-               
-                if(child){
-                 return [child.name, child.id]}
+        const Error = [];
+        const Category = await category.find({deleted:false})
+        const CatName=await  Category.map(cat=>{return [cat.name,cat.id]})
+        const PromisePro = Category.map(async(item)=>{
+            const temp= await Promise.all( item.products.map(async (pro)=>{
+                const prod = await product.findOne({id:pro,deleted:false})
+                if(prod){
+                return [prod.id,prod.name]}
+            }))
+        
+            
+            return temp;
+        })
+        const CategoryChild = await Promise.all( Category.map(async(item)=>{
+            const temp = await Promise.all(item.categoryChild.map(async (cat)=>{
+                const child = await category.findOne({id:cat, deleted:false})
                 
+                    if(child){
+                    return [child.name, child.id]}
+                    
+            }
+
+            ))
+            return temp
+        }))
+
+        const productInCategory =await  Promise.all(PromisePro)
+        if(req.cookies.errorAddCategory){
+            Error[0]=req.cookies.errorAddCategory
+
+        }
+        if(req.cookies.errorAddProductToCaTegory){
+            Error[1]=req.cookies.errorAddProductToCaTegory
         }
 
-        ))
-        return temp
-    }))
-
-    const productInCategory =await  Promise.all(PromisePro)
-    if(req.cookies.errorAddCategory){
-        Error[0]=req.cookies.errorAddCategory
-
+        const Rights = await rights.findOne({})
+        if(Reponse&&Reponse.typeAccount=="contentadmin"){
+            res.render('adminCategory',{category:CatName,productInCategory:productInCategory,Rights:Rights.typeOfSubAccount[0].rights ,error:Error,CategoryChild:CategoryChild,User:Reponse})
+        }
+        else{
+        res.render('adminCategory',{category:CatName,productInCategory:productInCategory ,error:Error,CategoryChild:CategoryChild,User:Reponse})
     }
-    if(req.cookies.errorAddProductToCaTegory){
-        Error[1]=req.cookies.errorAddProductToCaTegory
-    }
-
-    const Rights = await rights.findOne({})
-    if(Reponse&&Reponse.typeAccount=="contentadmin"){
-        res.render('adminCategory',{category:CatName,productInCategory:productInCategory,Rights:Rights.typeOfSubAccount[0].rights ,error:Error,CategoryChild:CategoryChild,User:Reponse})
-    }
-    else{
-    res.render('adminCategory',{category:CatName,productInCategory:productInCategory ,error:Error,CategoryChild:CategoryChild,User:Reponse})
-   } 
+ }
+ else{
+    res.redirect('/login')
+ }
 }
 
 
@@ -184,7 +192,7 @@ export const Showproduct = async (req,res)=>{
           
             res.redirect('/login')
         }
-    }
+    
     const Product= await product.find()
     const Category = await category.find({deleted:false})
     const cate = await Category.map(item=>{return [item.name,item.id]})
@@ -193,14 +201,19 @@ export const Showproduct = async (req,res)=>{
     if(!Reponse){
         res.redirect("/login")
     }
+    else{
 
     if(Reponse.typeAccount=="contentadmin"){
         res.render('adminProduct',{products:Product,category:cate,Rights:Rights.typeOfSubAccount[0].rights,User:Reponse})  
     }
     else{
     res.render('adminProduct',{products:Product,category:cate,User:Reponse})
-}
+}}
 
+}
+else{
+    res.redirect('/login')
+ }
 
 } 
 

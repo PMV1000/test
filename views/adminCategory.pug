@@ -24,14 +24,14 @@ html
                             h5(class="modal-title text-center text-red-500" id="exampleModalLabel") Xác Nhận Xóa
                             button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
                         div(class="modal-body text-gray-500 font-medium")
-                            |Bạn Chắc Chắn Muốn Xóa Danh Mục Này Chứ. Việc Khôi Phục Lại Sẽ Gặp Nhiều Khó Khăn 
+                            |Bạn Chắc Chắn Muốn Xóa Danh Mục Này Chứ? Việc Khôi Phục Lại Sẽ Gặp Nhiều Khó Khăn 
                         div(class="modal-footer")
                             button(type="button" class=" w-28 h-9 ml-4 border-red-400  border-2 text-red-500 rounded-md " data-bs-dismiss="modal") Thoát 
                             button(type="button" class="btn btn-warning w-20 text-white" id="confirmCat") Xóa
             if (error&&error[0])
-                div.alert.alert-danger(role="alert" class="h-16") Danh Mục Này Đã Tồn Tại
+                div.alert.alert-danger(role="alert" class="h-16" data-id="alerterror") Danh Mục Này Đã Tồn Tại
             if(error && error[1])
-                div.alert.alert-danger(role="alert" class="h-16") Sản Phẩm Không Tồn Tại
+                div.alert.alert-danger(role="alert" class="h-16" data-id="alerterror") Sản Phẩm Không Tồn Tại
             h3(class="text-red-400 text-2xl mt-12 text-center w-full") Danh Sách Danh Mục Sản Phẩm
             div(class=" w-full px-3  mt-12 flex justify-end relative")
                 button(class=(!Rights||Rights[1].value)?"":"hidden") 
@@ -39,12 +39,12 @@ html
                 div(class=" hidden absolute right-10 shadow z-50 w-52 h-56 bg-white text-gray-500 p-3 formAddCat " id="formTempId" )
                     div(class="w-full flex justify-end bg-yellow")
                         button
-                            i(class="fas fa-times iconsmall  addCategory button-times" data-id="formTempId")
+                            i(class="fas fa-times iconsmall  addCategory button-times" data-id="formTempId" id="buttonOutADDC")
                     h5(class="  text-red-500 font-semibold text-center w-full") Thêm Danh Mục
-                    form(class="  h-full w-full  space-y-4 flex flex-col text-sm " action="/admin/AddCategory" method="POST")
+                    form(class="  h-full w-full  space-y-4 flex flex-col text-sm " action="/admin/AddCategory" method="POST" id="formOutADDC")
                         input(class="border-2 border-gray-300 rounded-md w-36  mt-2 ml-2 h-6 p-2  text-gray-500 " name="category" autocomplete="on" required placeholder="CategoryName")  
                         select(class="border-2 border-gray-300 rounded-md w-44 ml-2  mt-2 h-8 text-xs  text-gray-500 " name="Supcategory" )
-                            option(value="" disable selected) Chọn Danh Mục Cha(Nếu có)
+                            option(value="" disable selected default="true") Chọn Danh Mục Cha(Nếu có)
                             each cat in category
                                     option(value=cat[1]) #{cat[0]}
 
@@ -56,8 +56,8 @@ html
 
                         div(class="accordion-item")
                         h2(class="accordion-header flex relative hoverButton"  data-id=`${index}`)
-                            button(class="accordion-button collapsed font-medium text-2xl flex-shrink-0 relative " type="button" data-bs-toggle="collapse" data-bs-target=`#flush-collapseOne${index}` aria-expanded="false" aria-controls="flush-collapseOne") #{cat[0]}
-                            button(class=(!Rights||Rights[2].value)?"flex justify-end w-2 h-2 mt-4 md:ml-6 text-sm flex-shrink-0 buttonEdidCat ":"hidden" data-id=index)
+                            button(class="accordion-button collapsed font-medium text-2xl flex-shrink-0 relative w-2/3" type="button" data-bs-toggle="collapse" data-bs-target=`#flush-collapseOne${index}` aria-expanded="false" aria-controls="flush-collapseOne") #{cat[0]}
+                            button(class=(!Rights||Rights[2].value)?"flex justify-end w-2 h-2 mt-4 md:ml-6 z-5 bg-while text-sm flex-shrink-0 buttonEdidCat ":"hidden" data-id=index)
                                 i(class="fas fa-edit " )
                                    
                             div(class="hidden absolute left-12 top-2 shadow z-40 w-52 h-56 bg-white font-medium text-sm text-red-300 p-2 overflow-y-auto overflow-x-hidden " id=`listChild${index}` )
@@ -69,7 +69,7 @@ html
                                         form(action="/admin/manageCategory/addChild" method="POST")
 
                                             select(class="border-2 border-gray-300 rounded-md w-28 ml-2  h-6 text-xs  text-gray-500 " name="id" )
-                                                option(value="" disable selected) Chọn Danh Mục
+                                                option(value="" disabled selected) Chọn Danh Mục
                                                 each cate in category
                                                     if(!CategoryChild[index].includes(cate)|| cate[1] !== cat[1])
                                                         option(value=cate[1]) #{cate[0]}
@@ -92,13 +92,13 @@ html
                             div(class=" hidden absolute right-1 top-8 shadow z-50 w-48 h-48 bg-white text-gray-500 p-3" id=`formEditCat${index}` )
                                 div(class="w-full flex justify-end bg-yellow")
                                     button
-                                        i(class="fas fa-times iconsmall buttonEdidCat" data-id=index)
+                                        i(class="fas fa-times iconsmall buttonOutEdidCat" data-id=index id=`butnEditCat${index}`)
                                 h5(class="  text-red-500 font-semibold text-center w-full") Chỉnh Sửa
-                                form(class="  h-full w-full  space-y-4 flex flex-col text-sm" action="/admin/editCategory" method="POST")
+                                form(class="  h-full w-full  space-y-4 flex flex-col text-sm" action="/admin/editCategory" method="POST" id=`FEditCat${index}`)
                                     input(class="border-2 border-gray-300 rounded-md w-36  mt-2 h-6 p-2  text-gray-500 " name="category" value=cat[0] autocomplete="on" required placeholder="CategoryName")
                                     input(type="hidden" name="id" value=cat[1])
                                     select(class="border-2 border-gray-300 rounded-md w-40  mt-2 h-8 text-xs  text-gray-500 " name="Supcategory" )
-                                        option(value="" disable selected) Chọn Danh Mục Cha(Nếu có)
+                                        option(value="" disabled selected default="true") Chọn Danh Mục Cha(Nếu có)
                                         each cate in category
                                             if(cate[1] !== cat[1])
                                                 option(value=cate[1]) #{cate[0]}  
