@@ -20,20 +20,20 @@ html
         +footer()
         +sider()   
         +siderUser(user)     
-        div(class='fixed px-8  top-20 left-0 h-32 text-4xl w-full font-medium overflow-x-auto overflow-y-hidden shadow space-x-6 flex white-space:no-wrap justify-around items-center md:text-2xl z-40 bg-white')
+        div(class='fixed px-8  top-20 left-0 h-32 text-4xl w-full font-medium overflow-x-auto  shadow space-x-6 flex white-space:no-wrap justify-around items-center md:text-2xl z-40 bg-white')
                     each category,key in categoryData
-                        - var hrefValue = (category.categoryChild.length === 0) ? `/category/${category.id}` : null
+                        - var hrefValue = (!category.categoryChild||category.categoryChild.length === 0) ? `/category/${category.id}` : null
                         a(href=hrefValue || '#' class="text-2xl text-red-500 no-underline flex items-center whitespace-nowrap mt-4 h-full button-cat" data-id=key)
                             button(class=' w-auto  relative  h-full ' ) 
                                 p(class=" flex flex-shrink-0 hover:bg-red-100 justify-start text-start font-bold p-3") #{category.name}
-                                if category.categoryChild.length > 0
+                                if category.categoryChild&& category.categoryChild.length > 0
                                     div(class='hidden z-50 h-28 w-24 shadow overflow-y-auto  font-medium text-orange-400 flex flex-wrap justify-center absolute bg-white right-0 top-0' id=`catchilds${key}` )
                                         
                                         if(childCats[category.id].lenght===0)
                                             p(class="text-gray-600 text sm text-center") không có danh mục nào
                                         each categories, key in childCats[category.id]
                                             if (categories)
-                                                - var hrefValue = (categories.categoryChild&&categories.categoryChild.length === 0) ? `/category/${categories.id}` : null
+                                                - var hrefValue = (!categories.categoryChild||categories.categoryChild.length === 0) ? `/category/${categories.id}` : null
                                                 a(href=hrefValue || '#' class="text-red-500 no-underline flex items-center whitespace-nowrap")
                                                     button(class='text-orange-400 w-full text-sm flex-col')=categories.name
                                                         hr(class='w-full')
@@ -41,7 +41,8 @@ html
 
         div(class='container text-xl text-gray-700 flex-1 mt-48 flex flex-wrap gap-3 flex md:mx-24 z-10 w-full justify-center md:justify-start')
             each product in productData
-                +card(product)
+                if(product)
+                    +card(product)
             if(productData.length ===0) 
                 p(class="text-gray-600 w-full text-center mt-16") Không có sản phẩm nào trong danh mục này
-        script(src='/index.js' ) 
+

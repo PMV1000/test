@@ -16,7 +16,7 @@ html(lang="en")
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous")
     script(src="/tinymce.min.js")
 
-    script(src="https://cdn.tiny.cloud/1/5fxl12ux1gwq75ukb0yjklc0rc23764knyyf5lb8rq6x6qij/tinymce/7/tinymce.min.js" referrerpolicy="origin")
+    script(src="https://cdn.tiny.cloud/1/cjahw2vlgi51jeoa0c8zw937hj7ye5dmdx9fau346tdje093/tinymce/7/tinymce.min.js" referrerpolicy="origin")
     script.
       tinymce.init({
         selector: '#mytextarea',
@@ -76,8 +76,8 @@ html(lang="en")
                         div(class="w-6/7 mt-2 flex justify-end")
                             button(id="ButtonOutPro" class="button-addPro")
                                 i(class="fas fa-times ")
-                        h3(class=" text-2xl text-red-500 font-semibold text-center w-full") Thêm Mới Sản Phẩm
-                        form(class=" mt-8 h-full w-full  space-y-4 " action="/admin/addProduct" method="POST" id="FormAddProduct"  enctype="multipart/form-data")
+                        h3(class=" text-2xl text-red-500 font-semibold text-center w-full mr-4") Thêm Mới Sản Phẩm
+                        form(class="  h-full w-full  space-y-4 relative py-10 " action="/admin/addProduct" method="POST" id="FormAddProduct"  enctype="multipart/form-data")
                             input(class="border-2 border-gray-300 w-60 rounded-md md:w-2/3 ml-20 mt-4 h-6 p-2 text-sm-gray-500 " name="product" value='ProductName1' autocomplete="on" required placeholder="ProductName") 
                             input(class="border-2 border-gray-300 w-60 rounded-md md:w-2/3 ml-20  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 " value='200.000'  name="price" type="Number"  autocomplete="on" required placeholder=" Giá")
                             input(type="file" name='img' class="h-6 w-60 border-2 border-gray-300 ml-20 rounded-md md:w-2/3 " required placeholder=" Chọn Hình Ảnh" multiple)
@@ -87,8 +87,8 @@ html(lang="en")
                                     option(value=cat[1]) #{cat[0]}
                                 
                             textarea(id="mytextarea" name="desc" require placeholder="  Mô tả sản phẩm"  class="ml-4 mt-4 border-2 border-gray-300 rounded-md w-5/6 h-40 ")
-                            button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-28 ml-28 md:ml-6  mt-40") Thêm
-
+                            button( type="submit" class="absolute right-4 text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-28 mr-4 ml-2 mt-40") Thêm
+                                //- ml, mr
             div(class="w-full h-auto mt-6  px-2")
                 
                 table(class="text-center background-collapse md:ml-20 relative")
@@ -113,7 +113,7 @@ html(lang="en")
                                 td 
                                     button(class=(pro.deleted?"h-10 w-32 p-1 text-center bg-red-600 text-gray-100 rounded-md":"btn btn-success h-10 w-32 p-1 text-center ") data-status= pro.deleted?"false":"true" ,  data-id=pro.id)
                                         span(class=" text-sm") #{pro.deleted?"Ngừng Hoạt Động":"Đang Hoạt động"}
-                                td(class="flex w-full") 
+                                td(class="flex w-full ") 
                                     button(class=(!Rights||Rights[5].value)?"flex w-1/3 justify-start mr-1  md:justify-center mt-2 buttonOpenFormEdit":"hidden" data-id=pro.id) 
                                         i(class="fas fa-edit ml-2 md:mr-2 " ) 
                                     div(class="hidden absolute md:right-32 top-10 right-3 p-4 w-auto md:p-0  h-auto bg-yellow-100 z-50" id=`FormEditProduct${pro.id}`) 
@@ -121,28 +121,23 @@ html(lang="en")
                                             button( class="buttonCloseFormEdit" id=`buttonCloseFormEdit${pro.id}` data-id=pro.id)
                                                 i(class="fas fa-times ")
                                         h3(class=" text-2xl text-red-500 font-semibold text-center w-full") Chỉnh Sửa Sản Phẩm
-                                        form(class=" mt-8 h-full ml-10 w-full  space-y-4 " action="/admin/editProduct" method="POST" id=`EditProduct${pro.id}`)
-                                            input(type="hidden" name=pro.id )
+                                        form(class=" mt-8 h-full ml-10 w-full  space-y-4 " action="/admin/editProduct" method="POST" id=`EditProduct${pro.id}` enctype="multipart/form-data")
+                                            input(type="hidden" name="id" value=pro.id )
                                             input(class="border-2 border-gray-300 rounded-md w-4/5  mt-4 h-6 p-2 text-sm-gray-500  mr-48" name="product" value= pro.name autocomplete="on" required placeholder="ProductName") 
                                             input(class="border-2 border-gray-300 rounded-md w-4/5  mt-2 md:mt-3 h-6 p-2 text-sm text-gray-500 mr-48" value=pro.price name="price" type="Number"  autocomplete="on" required placeholder=" Giá")
-                                            input(type="file" name="img" class="h-6  border-2 border-gray-300  rounded-md w-4/5 mr-48" required placeholder=" Chọn Hình Ảnh" multiple value=pro.image)
+                                            input(type="file" name="img" class="h-6  border-2 border-gray-300  rounded-md w-4/5 mr-48" placeholder=" Chọn Hình Ảnh" multiple value=pro.image)
+                                            input(type="hidden" name="InfoRemove" value=`` id=`removeImg${pro.id}`)
                                             div(class="border-2 border-gray-300 h-48  md:h-80 w-2/5 mr-48 ")
                                                 each image,index in pro.imageURL
-                                                      div(class=(image&&pro.imageURL.length===1)?"w-full h-full relative":`w-1/${pro.imageURL.length} h-1/${pro.imageURL.length} p-1 relative`  )
-                                                        img(src=image class="w-full h-full border-2 border-gray-600")
-                                                        form(action="/admin/manageProduct/removeImage" method="POST" id=`removeImg${pro.id}`)
-                                                            input(type="hidden" name="Info" value=`${index}Of${pro.id}`)
-                                                            button( type="button" class="absolute top-2 right-4 removeImage" data-id=`${pro.id}`)
-                                                                i(class="fas fa-times ")
-
-
-
+                                                    div(class=(image&&pro.imageURL.length===1)?"w-full h-full relative":`w-1/${pro.imageURL.length} h-1/${pro.imageURL.length} p-1 relative` id=`Img${index}Of${pro.id}` )
+                                                        img(src=image class="w-full h-full border-2 border-gray-600 ")
+                                                    
+                                                        button( type="button" class="absolute top-2 right-4 removeImage" data-index=`${index}` data-id=`${pro.id}`)
+                                                            i(class="fas fa-times ")
                                             textarea(id="mytextarea2" name="desc" require placeholder="  Mô tả sản phẩm"  class="ml-8 mt-4 border-2 border-gray-300 rounded-md w-5/6 h-40 text-center " )
                                                 |#{pro.decs}
                                             button( type="submit" class="text-red-400 h-9 p-1 border-2 border-red-400 rounded-md w-28 ml-28 md:ml-6  mt-40") Sửa
-
-
-
+                                      
                                         
                                     form(action="/admin/removeProduct" id=`FRMPRO${pro.id}` method="POST" class=(!Rights||Rights[6].value)?"flex w-1/3 justify-end":"hidden")
                                         input(type="hidden" name="id" value=pro.id)

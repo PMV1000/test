@@ -3,6 +3,7 @@ import category from "../model/category.js"
 import product from "../model/product.js"
 import rights from "../model/rights.js"
 import { nanoid } from 'nanoid';
+import he from 'he';
 
 export const show =async (req,res)=>{
     const response = await user.find() 
@@ -224,27 +225,39 @@ export const addProduct =  async (req,res,imageUploads)=>{
     const price = req.body.price
     const Cate = req.body.category
     const img =imageUploads
-    const New = new product ({id:`${nanoid()}${id}`,deleted:false,name:name, price:price,decs:desc,imageURL:img,categoryId:Cate})
+    console.log(img,"ảnh")
+    const New = new product ({id:`${nanoid()}${id}`,deleted:false,name:name, price:price,decs:he.decode(desc.replace(/<[^>]*>/g, '')),imageURL:img,categoryId:Cate})
     New.save()
     res.redirect('back')
  
 }
 export const editProduct =  async (req,res,imageUploads)=>{
+    const infoRemove = req.body.InfoRemove;
     const id = req.body.id
     const name= req.body.product
     const desc = req.body.desc
     const price = req.body.price
     const img =imageUploads
-   await product.updateOne({id:id},{$set:{name:name,price:price,decs:desc,imageURL:img}})
+    const Pro=await product.findOne({id:id})
+    //thực hiện xóa ảnh nếu có 
+    if(infoRemove.length>1){
+        var infoRm=[];
+        infoRemove.split(";").forEach(index=>{
+            if(index){infoRm.push(Pro.imageURL[index])}})
+        console.log("preinfo",infoRm)
+        removeImage(id,infoRm)
+    }
+   await product.updateOne({id:id},{$set:{name:name,price:price,decs:he.decode(desc.replace(/<[^>]*>/g, '')),discount:`${price*100/Pro.price}`},$push:{imageURL:img}})
+
     res.redirect('back')
  
 }
 
-export const removeImage = async (req,res)=>{
-    const info = req.body.Info.split("Of")
-    console.log("hii",info)
-    // await product.updateOne({id:info[1]},{$pull:{imageURL:imageURL[info[0]]}})
-    res.redirect('back')
+export const removeImage = async (id, infoRemove)=>{
+    console.log("img",infoRemove)
+    
+    await product.updateOne({id:id},{$pull:{imageURL:{$in: infoRemove}}})
+    // res.redirect('back')
 }
 
 export const removeProduct = async (req,res)=>{

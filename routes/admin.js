@@ -37,7 +37,7 @@ router.post("/editProduct",async (req,res)=>{
     console.log(req.files); // Thêm log để kiểm tra req.files
     try {
         if (!req.files || req.files.length === 0) {
-            return res.status(400).send('Không có file nào được gửi lên');
+            // return res.status(400).send('Không có file nào được gửi lên');
         }
         
         const imageUploads = req.files.map(file => file.path);

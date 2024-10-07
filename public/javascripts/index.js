@@ -346,6 +346,13 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
       if(button&&button.getAttribute("data-id")){
         
         button.addEventListener("click",()=>{
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100){
+            window.scrollTo({
+              top: 50,
+              behavior: 'smooth' // Thêm hiệu ứng cuộn mượt
+          });
+          }
+
           console.log(`#FormEditProduct${button.getAttribute("data-id")}`)
           const Form = document.querySelector(`#FormEditProduct${button.getAttribute("data-id")}`)
           if(Form){
@@ -360,16 +367,23 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
 
   const ButtonRemoveImage = document.querySelectorAll('.removeImage')
   if(ButtonRemoveImage ){
-    console.log("lấy được Buttonr r")
-    ButtonRemoveImage .forEach(button=>{
+    console.log("lấy được Buttonr rI")
+    ButtonRemoveImage.forEach(button=>{
       if(button&&button.getAttribute("data-id"))
         button.addEventListener("click",()=>{
           console.log("lấy click được Buttonr r",`#removeImg${button.getAttribute("data-id")}`)
-          const Form =document.querySelector(`#removeImg${button.getAttribute("data-id")}`)
-          console.log("lấy cl" ,Form)
-          if(Form){
+          const inputhidden =document.querySelector(`#removeImg${button.getAttribute("data-id")}`)
+          console.log("lấy cl" ,inputhidden)
+          if(inputhidden){
             
-            Form.submit()
+            inputhidden.value+=`;${button.getAttribute("data-index")}`
+            console.log("in", inputhidden)
+          }
+
+          const divContainImg = document.querySelector(`#Img${button.getAttribute("data-index")}Of${button.getAttribute("data-id")}`)
+          if(divContainImg){
+            divContainImg.classList.add("hidden")
+            console.log("div", divContainImg)
           }
 
         

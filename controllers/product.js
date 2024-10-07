@@ -6,8 +6,11 @@ export const show = async (req, res) => {
     try {
         var User=null
         if(req.cookies.code){
-             User = await user.findOne({code:req.cookies.code})}
+             User = await user.findOne({code:req.cookies.code})
+        }
+
         const response = await product.findOne({ deleted: false, id: req.params.id });
+        console.log(response)
       
         if (response) {
             if(req.cookies.code){
