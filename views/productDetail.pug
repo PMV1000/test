@@ -25,8 +25,8 @@ html(lang="en")
     main(class="w-full h-auto p-4 mt-20 ")
         if (Message && Message[0])
             div.alert.alert-warning(role="alert" class="h-16" data-id="alerterror") Bạn Chưa Đăng Nhập
-        div(class="md:flex md:justify-between")
-            div(id="carouselExampleCaptions" class="carousel slide mb-20 lg:mr-32 md:mr-20 xl:mr-48" data-bs-ride="carousel")
+        div(class="md:flex justify-center md:justify-between")
+            div(id="carouselExampleCaptions" class="carousel slide ml-8 mb-20 lg:mr-32 md:mr-20 xl:mr-48" data-bs-ride="carousel")
                 div(class="carousel-indicators md:m-0 mt-20 ")
                     each img, index in products.imageURL  
                         button(type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to=`${index}` class=index===0?"active":"" aria-current="true" aria-label=`Slide ${index}1`)
@@ -50,17 +50,17 @@ html(lang="en")
                     span(class="visually-hidden") Next
                 
               
-            div(class=" h-auto w-1/3  mr-auto mt-8 space-y-12 p-2 bg-yellow-100 md:text-center mb-20 ")
+            div(class=" h-auto w-full md:w-1/3  mr-auto mt-8 space-y-12 p-2 md:text-center mb-20 ")
                 h1(class="text-red-500 font-semibold h-auto ml-4 text-3xl") #{products.name} 
-                p(class="text-pink-400 text-xl ml-2") #{products.price}.000 đ
+                p(class="text-pink-400 text-xl ml-2") #{(products.price*(1-products.discount/100)).toFixed(3)} VND
                 div(class="md:space-y-6 w-full flex justify-center md:block fixed bg-yellow-100 p-2 px-4 md:relative bottom-12 left-2")
-                    input(type="Number" class="border-2 w-36 h-9 mt-2 text-center rounded-md" value="1") 
-                    br(class="hidden md:block") 
+                    
+                   
                     form( action="/productDetail/addToCart" method="POST")
+                        input(type="Number" name="quantity" class="border-2 w-36 h-9 my-2 text-center rounded-md" value="1")
+                        br(class="hidden md:block") 
                         input(type="hidden" value=products.id name="id")
                         button( type="submit" class="w-44 ml-8 md:ml-0 h-12 text-lg font-medium text-red-500 bg-yellow-300 rounded-md" ) Mua Ngay
         div(class="w-full h-auto text-md font-normal text-gray-600  mb-44")
             h5(class=" text-lg text-gray-500 font-semibold") Mô tả sản phẩm
-            p   |    Đây là
-                |#{products.decs} 
-                |Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, facilis? Provident veritatis atque fuga blanditiis vitae quisquam nisi quas delectus sequi, quam consequatur fugiat in necessitatibus, porro dolores fugit minus?
+            p #{`   `+` ${products.decs}`} 

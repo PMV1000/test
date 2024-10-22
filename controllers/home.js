@@ -54,12 +54,10 @@ export const editPassword =async(req,res)=>{
     if(await user.findOne({id:id,password:oldPass})){
         await user.updateOne({id:id},{$set:{password:newPass}})
         console.log("back")
-        
+      res.redirect("back")  
     }
-    else{
-        res.cookie("errorPassWordEdit","sai mật khẩu",{expires:new Date(Date.now()+15000)})
-    }
-    res.redirect("back")
+
+    
 }
 
 

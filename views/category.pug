@@ -22,21 +22,14 @@ html
         +siderUser(user)     
         div(class='fixed px-8  top-20 left-0 h-32 text-4xl w-full font-medium overflow-x-auto  shadow space-x-6 flex white-space:no-wrap justify-around items-center md:text-2xl z-40 bg-white')
                     each category,key in categoryData
-                        - var hrefValue = (!category.categoryChild||category.categoryChild.length === 0) ? `/category/${category.id}` : null
-                        a(href=hrefValue || '#' class="text-2xl text-red-500 no-underline flex items-center whitespace-nowrap mt-4 h-full button-cat" data-id=key)
-                            button(class=' w-auto  relative  h-full ' ) 
-                                p(class=" flex flex-shrink-0 hover:bg-red-100 justify-start text-start font-bold p-3") #{category.name}
-                                if category.categoryChild&& category.categoryChild.length > 0
-                                    div(class='hidden z-50 h-28 w-24 shadow overflow-y-auto  font-medium text-orange-400 flex flex-wrap justify-center absolute bg-white right-0 top-0' id=`catchilds${key}` )
-                                        
-                                        if(childCats[category.id].lenght===0)
-                                            p(class="text-gray-600 text sm text-center") không có danh mục nào
-                                        each categories, key in childCats[category.id]
-                                            if (categories)
-                                                - var hrefValue = (!categories.categoryChild||categories.categoryChild.length === 0) ? `/category/${categories.id}` : null
-                                                a(href=hrefValue || '#' class="text-red-500 no-underline flex items-center whitespace-nowrap")
-                                                    button(class='text-orange-400 w-full text-sm flex-col')=categories.name
-                                                        hr(class='w-full')
+                        a(href=`/category/${category.id}` class="text-2xl text-red-500 no-underline flex items-center whitespace-nowrap mt-4 h-full button-cat relative" data-id=key)
+                            button(class=' w-auto  relative  h-full  text-center  ' )
+                                p(class=" flex flex-shrink-0 justify-start text-start font-bold p-3 mt-0") #{category.name}  
+                            if childCats["category6"] && Array.isArray(childCats[category.id]) && childCats[category.id].length > 0
+                                div(class='hidden z-50 h-28 w-24 shadow overflow-y-auto font-medium text-orange-400 flex flex-wrap justify-center absolute bg-white right-0 top-3 bg-yellow-100' id=`catchilds${key}`)
+                                    each categories, key in childCats[category.id]
+                                        a(href=`/category/${categories.id}` class="text-red-400 text-xs") #{categories.name}
+                                    
 
 
         div(class='container text-xl text-gray-700 flex-1 mt-48 flex flex-wrap gap-3 flex md:mx-24 z-10 w-full justify-center md:justify-start')
@@ -45,4 +38,5 @@ html
                     +card(product)
             if(productData.length ===0) 
                 p(class="text-gray-600 w-full text-center mt-16") Không có sản phẩm nào trong danh mục này
+                
 

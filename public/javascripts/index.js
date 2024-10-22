@@ -284,12 +284,13 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
      if(ButtonShowChildCatInClients){
       ButtonShowChildCatInClients.forEach(button=>{
         if(button&&button.getAttribute("data-id")){
-          button.addEventListener("click",()=>{
+          button.addEventListener("mouseenter",()=>{
             const DivChild = document.querySelector(`#catchilds${button.getAttribute("data-id")}`)
             if(DivChild){
             DivChild.classList.remove("hidden")
+            console.log(DivChild)
 
-            DivChild.addEventListener("mouseleave",()=>{
+            button.addEventListener("mouseleave",()=>{
               DivChild.classList.add("hidden")
             })}
         })
@@ -500,4 +501,48 @@ const exit =(ButtonExitId,FormId,divContainId)=>{
 
   //..
 
+
+  // Thay đổi số lượng sản phẩm trong cart
+
+  const quantityProInCarts =document.querySelectorAll(".input_quantity") 
+  if(quantityProInCarts){
+    console.log("lấy được all")
+    quantityProInCarts.forEach(button=>{
+      if(button &&button.getAttribute("data-id")){
+        button.addEventListener("change",()=>{
+          // const form= new FormData()
+          // form.append("quantity",button.value)
+          // form.append("productId",button.getAttribute("data-id"))
+          // form.append("cartId",button.getAttribute("data-cart"))
+          // console.log("Form",form,button.getAttribute("data-id"),button.value)
+          // console.log("Gửi dữ liệu:", {
+          //   quantity: button.value,
+          //   productId: button.getAttribute("data-id"),
+          //   cartId: button.getAttribute("data-cart")
+          // });
+          // fetch('/cart/changeQuan', {
+          //   method: 'POST',
+          //   body: form,
+          // }).then(response=>response.json()).then(data=>console.log("dữ liệu sau fetch ",data))
+          const quantity = button.value;
+          const productId = button.getAttribute("data-id");
+          const cartId = button.getAttribute("data-cart");
+          
+          const url = new URL('/cart/changeQuan', window.location.origin);
+          url.searchParams.append('quantity', quantity);
+          url.searchParams.append('productId', productId);
+          url.searchParams.append('cartId', cartId);
+          console.log("Thông Tin:", productId, "-", quantity, "-", cartId)
+
+        fetch(url, {
+          method: 'GET',
+        })
+          .then(response => response.json())
+          .then(data => console.log("Dữ liệu sau fetch", data))
+          .catch(error => console.error("Lỗi:", error));
+
+        })
+      }
+    })
+  }
     })

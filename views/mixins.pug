@@ -33,7 +33,7 @@ mixin header(title,user=null)
               i.fas.fa-search
           div(class='h-auto w-60 ml-4 bg-yellow border-1  hidden' id='suggest')
         a( href="/login" class=" no-underline  border-3 border-white rounded-md w-28   flex font-medium  mt-1 text-sm h-8 mr-1 md:h-10 md:mr-3  md:text-lg p-1 text-white" class=(user!==null?'hidden' :'') ) Đăng Nhập    
-        a(href=user!==null?'/login':'/cart' class='bg-transparent text-white' id="cart-icon" class=(user!==null? '':'hidden')) 
+        a(href=user===null?'/login':'/cart' class='bg-transparent text-white' id="cart-icon" class=(user!==null? '':'hidden')) 
           i(class='fa fa-shopping-cart p-1 hover:bg-gray-700 focus:text-gray-100')
         button(id="user-icon" class=(user!==null? '':'hidden'))
           i(class="fas fa-user-circle mt-2 ml-4 z-7 BTTsiderUser") 
@@ -53,14 +53,14 @@ mixin sider()
       hr(class= 'w-3/2   h-1')
 
 mixin card(product)
-  card
+  card.toFixed(3)
     div(class="card ml-8 mt-8 w-60 relative h-56 p-1" style="width: 17rem;")
       i(class=product&&product.discount>0&&product.discount<100?"bg-yellow-200 text-red-500 text-md font-semibold p-3 flex w-16 h-15 rounded-full z-5  absolute ":"hidden") #{product.discount}%
       img(src=product.imageURL[0] class="card-img-top z-4 border-1 border-red-300 w-52 h-44 mt-0" alt="")
       div(class="card-body")
         h5(class="card-title text-x h-12") #{product.name}
         p(class="card-text flex justify-around")
-          span(class="text-orange-100 text-md mb-2") #{product.price}.000 VND
+          span(class="text-orange-100 text-md mb-2") #{(product.price*(1-product.discount/100)).toFixed(3)} VND
         a(href=`/productDetail/${product.id}` class="bg-yellow-500 text-white px-6 py-1 rounded-md ml-10 block text-center") View Detail
 
 mixin login(type, error)
@@ -137,8 +137,9 @@ mixin siderUser(User)
                               i(class="fas fa-times ml-6 " id="BTNOutChangePass")
                             input(type="hidden" name="id" value=(User&&User.id)?User.id:"")
                             input(class=" mt-8 ml-8 border-2 border-gray-300 rounded-md h-7 w-32" type="password" name="oldPass" required placeholder="Mật khẩu cũ" ) 
+                            p(class="text-sm w-32 px-2 font-semibold text-red-600 m-0 mx-auto  hidden" id="error_incorrect_password") Sai mật khẩu
                             input(class="border-2 ml-8 border-gray-300 rounded-md h-7 w-32 mb-6" type="password"  name="NewPass" required placeholder="Mật khẩu mới" )
-                            button(class=" ml-12  w-24 rounded-md bg-red-500 text-white h-9 " type="submit") Đổi
+                            button(class=" ml-12  w-24 rounded-md bg-red-500 text-white h-9 " type="submit" ) Đổi
 
                         form(action="/logout" method="POST")
                           input(type="hidden" name="id" value=(User&&User.id)?User.id:"")

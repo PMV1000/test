@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     const BackButton = document.querySelector("#backButton")
     if(BackButton){
         BackButton.addEventListener("click",()=>{
-            window.history.back()
+            window.history.back().then(()=>{window.location.reload()})
+            
         })
     }
 
@@ -143,6 +144,29 @@ document.addEventListener('DOMContentLoaded',()=>{
 //     })
 //  }
 
+const form_change_P =document.querySelector("#FormChangePass")
+const error_Incorrect_pass=document.querySelector("#error_incorrect_password")
 
+
+if(error_Incorrect_pass&&form_change_P){
+    
+    form_change_P.addEventListener("submit",()=>{
+
+
+    
+
+        const setTEIP = setTimeout(()=>{
+            error_Incorrect_pass.classList.remove("hidden")
+            console.log("lỗi sai mật khẩu")
+            window.stop()
+        },6000)
+
+        if(window.location.href==='/'){clearTimeout(setTEIP);console.log("đúng")} // khi mật khẩu đúng sẽ redirect đồng nghĩa rời khỏi trang hiện tại
 
 })
+
+}
+
+})
+
+// sự kiện "beforeunload"

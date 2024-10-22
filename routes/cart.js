@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/', CartController.show);
 router.post('/remove-from-cart',CartController.remove);
 router.post("/removeMutiple",CartController.removeMutiple);
+router.get("/changeQuan",CartController.changeQuan);
 
 
 export default router;

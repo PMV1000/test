@@ -37,33 +37,36 @@ html
         if(data.length===0)
             p(class="text-red-400 text-xl text-center font-medium w-full") Chưa có sản phẩm nào trong giỏ hàng
         each item in data
-            div( class='container mt-16 md:mt-6 mb-24  w-full h-auto space-y-8')
-                div(class='my-2  shadow-md   w-full justify-between h-44 flex relative ' )
-                    div(class='flex w-full' data-id=item[0].id) 
-                        div(class="w-6 h-6 flex items-center justify-center rounded-md mt-3 ml-5   hidden     tick " data-id=item[0].id id=`tick${item[0].id}`)
-                            svg(width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg")
-                                rect(width="21" height="21" fill="#F97316" rx="4" ry="4")
-                                path(d="M6 12l4 4 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
-                        p(class='border-gray-300 border-1 w-36 md:w-44 md:h-40  h-36 mt-2 ml-6 relative')
-                            img(src=item[0].name.imageURL[0] alt='' class='border-gray-300 border-1 w-36 md:w-44 md:h-40  h-36  ')
-                            i(class=item[0].discount>0&&item[0].discount<100?"bg-yellow-200 text-red-500 text-md font-semibold p-2 flex w-12 h-12 rounded-full z-5   absolute  top-0 left-0":"hidden") #{item[0].discount}%
-                        div(class='ml-12 md:px-28 w-4/5 mt-2  untick' data-id=item[0].id)
-                            h2(class=' mb-2 h-12') #{item[0].name}
-                            span(class=' mb-4 h-8 w-8 px-2 py-1 text-lg text-red-500 ml-12 ') #{(item[0].price*(item[0].discount)/100).toFixed(0)}.000 VND
-                            form
-                            input(type='number' value=item[1] class='border-2 w-32 font-medium ml-2 mt-6  md:ml-8 rounded-md text-center' id='input_quantity' name='quantity' data-id=item[0].id)
-                    button(class='w-8 h-4 p-1 flex items-start justify-end class_btn_rm ' data-id=item[0].id)
-                        i(class='fas fa-ellipsis-h p-1  cursor-pointer md:mr-8  text-gray-500' )
-                    div(class=' absolute justify-end right-0 shadow h-12 md:w-40 w-28 mt-4 bg-white hidden' id=`remove_mn${item[0].id}`)
-                        form( method='POST' action='/cart/remove-from-cart')
-                            input(type='hidden' value=item[0].id name='productId' min="1" max=99)
-                                 //-id='rm'
-                            button(class='text-xs text-gray-500 font-medium md:text-sm ' ) 
-                                em(class=' h-2 md:ml-4 ml-1 mt-4 ') xóa khỏi giỏ hàng
-                                hr(class="w-full mb-4 ml-1 md:ml-4")              
+            if item
+                div( class='container mt-16 md:mt-6 mb-24  w-full h-auto space-y-8')
+                    div(class='my-2  shadow-md   w-full justify-between h-44 flex relative ' )
+                        div(class='flex w-full' data-id=item[0].id) 
+                            div(class="w-6 h-6 flex items-center justify-center rounded-md mt-3 ml-5   hidden     tick " data-id=item[0].id id=`tick${item[0].id}`)
+                                svg(width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg")
+                                    rect(width="21" height="21" fill="#F97316" rx="4" ry="4")
+                                    path(d="M6 12l4 4 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                            p(class='border-gray-300 border-1 w-36 md:w-44 md:h-40  h-36 mt-2 ml-6 relative')
+                                img(src=item[0].imageURL[0] alt='' class='border-gray-300 border-1 w-36 md:w-44 md:h-40  h-36  ')
+                                i(class=item[0].discount>0&&item[0].discount<100?"bg-yellow-200 text-red-500 text-md font-semibold p-2 flex w-12 h-12 rounded-full z-5   absolute  top-0 left-0":"hidden") #{item[0].discount}%
+                            div(class='ml-12 md:px-28 w-4/5 mt-2  untick' data-id=item[0].id)
+                                h2(class=' mb-2 h-12') #{item[0].name}
+                                span(class=' mb-4 h-8 w-8 px-2 py-1 text-lg text-red-500 ml-12 ') #{((item[0].price*(1-item[0].discount/100))).toFixed(3)} VND
+                                form
+                                input(type='number' value=item[1] class='border-2 w-32 font-medium ml-2 mt-6  md:ml-8 rounded-md text-center input_quantity' data-cart=user.id  name='quantity' data-id=item[0].id)
+                        button(class='w-8 h-4 p-1 flex items-start justify-end class_btn_rm ' data-id=item[0].id)
+                            i(class='fas fa-ellipsis-h p-1  cursor-pointer md:mr-8  text-gray-500' )
+                        div(class=' absolute justify-end right-0 shadow h-12 md:w-40 w-28 mt-4 bg-white hidden' id=`remove_mn${item[0].id}`)
+                            form( method='POST' action='/cart/remove-from-cart')
+                                input(type='hidden' value=item[0].id name='productId' )
+                                input(type='hidden' value=user.id name='UserId' )
+
+                                    //-id='rm'
+                                button(class='text-xs text-gray-500 font-medium md:text-sm ' ) 
+                                    em(class=' h-2 md:ml-4 ml-1 mt-4 ') xóa khỏi giỏ hàng
+                                    hr(class="w-full mb-4 ml-1 md:ml-4")              
         div(class='bg-red-100 w-full fixed h-24 bottom-0 left-0 flex justify-end z-50 ')
             div
-                p(class='mt-1 mr-8 text-xl text-red-400') Tổng Thành Tiền: #{total}.000 VND
+                p(class='mt-1 mr-8 text-xl text-red-400') Tổng Thành Tiền: #{total.toFixed(3)} VND
                 a(href="/payment") 
                     button(class='bg-yellow-400 text-md  ml-12 text-yellow-50 w-28 h-8 p-1 rounded-md md:mr-2 ') Thanh Toán                
     +sider()
